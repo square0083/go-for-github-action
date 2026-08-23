@@ -1,16 +1,25 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"time"
 
+	"go-for-action/hello"
 	"go-for-action/internal/user"
 )
 
 func main() {
+	count := flag.Int("count", 1, "number of times to print the greeting")
+	flag.Parse()
+
+	for i := 0; i < *count; i++ {
+		fmt.Println(hello.Greet())
+	}
+
 	store, err := user.NewSQLiteStore(envOr("DATABASE_PATH", "data/app.db"))
 	if err != nil {
 		log.Fatalf("init store: %v", err)
